@@ -11,3 +11,5 @@
 - DELETE /users/{userId} - Deregister a specific user from the contest
 
 ## Postman collection
+
+[Leaderboard API.postman_collection.json](https://github.com/user-attachments/files/18002597/Leaderboard.API.postman_collection.json)
