@@ -30,7 +30,7 @@ public class User {
 		if (badges == null) {
 	        badges = new HashSet<>();
 	    }
-        badges.clear();
+        
         if (score >= 1 && score < 30) {
             badges.add(Badge.CODING_NINJA);
         } else if (score >= 30 && score < 60) {

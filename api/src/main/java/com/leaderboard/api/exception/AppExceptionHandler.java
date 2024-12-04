@@ -12,9 +12,11 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.leaderboard.api.dto.AppResponse;
 import com.leaderboard.api.dto.ErrorResponse;
@@ -62,9 +64,27 @@ public class AppExceptionHandler {
         log.error(e.toString(), e.getMessage());
         return build(HttpStatus.BAD_REQUEST, e.getCause() != null ? e.getCause().getMessage() : e.getMessage());
     }
+    
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public final ResponseEntity<AppResponse> handleMissingServletRequestParameterException(final MissingServletRequestParameterException e) {
+        log.error(e.toString(), e.getMessage());
+        return build(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
+    }
+    
+    @ExceptionHandler(NoResourceFoundException.class)
+    public final ResponseEntity<AppResponse> handleNoResourceFoundException(final NoResourceFoundException e) {
+        log.error(e.toString(), e.getMessage());
+        return build(HttpStatus.NOT_FOUND, e.getMessage());
+    }
 
     @ExceptionHandler(IllegalStateException.class)
     public final ResponseEntity<AppResponse> handleIllegalStateException(final IllegalStateException e) {
+        log.error(e.toString(), e.getMessage());
+        return build(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+    
+    @ExceptionHandler(InvalidScoreException.class)
+    public final ResponseEntity<AppResponse> handleInvalidScoreException(final InvalidScoreException e) {
         log.error(e.toString(), e.getMessage());
         return build(HttpStatus.BAD_REQUEST, e.getMessage());
     }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.leaderboard.api.dto.ContestRegistrationDto;
 import com.leaderboard.api.dto.UserDto;
 import com.leaderboard.api.entity.User;
+import com.leaderboard.api.exception.InvalidScoreException;
 import com.leaderboard.api.exception.NotFoundException;
 import com.leaderboard.api.repository.UserRepository;
 import com.leaderboard.api.services.UserService;
@@ -49,6 +50,10 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void updateScore(String userId, int score) {
+		if(score < 0 || score > 100) {
+			throw new InvalidScoreException("invalid score, score should be between 0 to 100");
+		}
+		
 		Optional<User> optionalContest = userRepository.findByUserId(userId);
 		User user = optionalContest.orElseThrow(() -> new NotFoundException("User not found with given id"));
 		user.setScore(score);
